@@ -1,0 +1,46 @@
+import React, { useState, useEffect, memo } from 'react';
+import PropTypes from 'prop-types';
+import './WrappedSingleListItem';
+import WrappedSingleListItem from './WrappedSingleListItem';
+
+
+const WrappedListComponent = ({
+    items,
+  }) => {
+    const [setSelectedIndex, selectedIndex] = useState();
+  
+    useEffect(() => {
+      setSelectedIndex(null);
+    }, [items]);
+  
+    const handleClick = index => {
+      setSelectedIndex(index);
+    };
+  
+    return (
+      <ul style={{ textAlign: 'left' }}>
+        {items.map((item, index) => (
+          <WrappedSingleListItem
+            onClickHandler={() => handleClick(index)}
+            text={item.text}
+            index={index}
+            isSelected={selectedIndex}
+          />
+        ))}
+      </ul>
+    )
+  };
+  
+  WrappedListComponent.propTypes = {
+    items: PropTypes.array(PropTypes.shapeOf({
+      text: PropTypes.string.isRequired,
+    })),
+  };
+  
+  WrappedListComponent.defaultProps = {
+    items: null,
+  };
+  
+  const List = memo(WrappedListComponent);
+  
+  export default List;
